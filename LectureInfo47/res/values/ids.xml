@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <item type="id" name="composer">false</item>
+    <item type="id" name="composer_buttons_wrapper">false</item>
+    <item type="id" name="composer_button_photo">false</item>
+    <item type="id" name="composer_button_share">false</item>
+    <item type="id" name="composer_button_place">false</item>
+    <item type="id" name="composer_button_favorate">false</item>
+    <item type="id" name="composer_button_chat">false</item>
+    <item type="id" name="composer_button_sleep">false</item>
+    <item type="id" name="composer_buttons_show_hide_button">false</item>
+    <item type="id" name="composer_buttons_show_hide_button_icon">false</item>
+</resources>

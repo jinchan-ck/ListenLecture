@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background01"
+    android:gravity="fill_vertical"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/up"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <!-- android:textAppearance="@android:style/TextAppearance.Large" -->
+
+        <tk.sweetvvck.customview.MyTextView
+            android:id="@+id/title"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/titlebar_blue"
+            android:contentDescription="@string/theme_name"
+            android:gravity="center_horizontal|fill_vertical"
+            android:text="@string/theme_name"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/up"
+        android:id="@+id/layout_body"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+    </LinearLayout>
+
+    <tk.sweetvvck.utils.MoveLayout
+        android:id="@+id/layout_bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/titlebar_blue"
+        android:baselineAligned="false"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/favorite"
+            android:layout_width="64dp"
+            android:layout_weight="1"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/favorate"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/hot"
+            android:layout_weight="1"
+            android:layout_width="64dp"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/hot"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/style"
+            android:layout_width="64dp"
+            android:layout_weight="1"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/host"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/upload"
+            android:layout_width="64dp"
+            android:layout_weight="1"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/upload"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/set"
+            android:layout_width="64dp"
+            android:layout_weight="1"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/set"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </tk.sweetvvck.utils.MoveLayout>
+
+    <tk.sweetvvck.customview.MyImageView
+        android:id="@+id/main_fresh"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        android:src="@android:drawable/ic_popup_sync"
+        android:visibility="visible" />
+
+    <tk.sweetvvck.customview.MyProgressBar
+        android:id="@+id/refresh_bar"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="17dp"
+        android:layout_marginTop="18dp"
+        android:visibility="gone" />
+
+</RelativeLayout>

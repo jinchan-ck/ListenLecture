@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">V_V</string>
+    <string name="theme_name">听讲座</string>
+    <string name="shoucang">收藏</string>
+    <string name="tuijian">推荐</string>
+    <string name="zijizhao">自己找</string>
+    <string name="date">时间:</string>
+    <string name="address">地址:</string>
+    <string name="lecture">讲座:</string>
+    <string name="speaker">演讲者:</string>
+    <string name="content">主要内容:</string>
+    <string name="yuerenting">约人听</string>
+    <string name="loaddata">努力加载中...</string>
+    <string name="uploaddata">发布讲座</string>
+    <string name="uploading">正在发布，请稍后</string>
+    <string name="response_fail">未响应！</string>
+    <string name="connect_fail">网络连接失败！</string>
+    <string name="refresh">刷新</string>
+    <string name="null_lecture">无讲座信息</string>
+    <string name="searchHint">请输入讲座名称</string>
+    <string name="upload_img">上传海报：</string>
+    <string name="lecture_name">讲座名称：</string>
+    <string name="host_name">主办学校：</string>
+    <string name="reset">重置</string>
+    <string name="deleting">正在清空</string>
+    <string name="delete_this_one">删除该条收藏</string>
+    <string name="deleting_this">删除中</string>
+    <string name="add_lecture">发布一条</string>
+    <string name="beijingligongdaxue">北京理工大学</string>
+    <string name="chuanmei">中国传媒大学</string>
+    <string name="guobo">中国国家博物馆</string>
+    <string name="guotu">中国国家图书馆</string>
+    <string name="shoutu">首都图书馆</string>
+    <string name="red">纹理红</string>
+    <string name="green">橄榄绿</string>
+    <string name="blue">天际蓝</string>
+    <string name="dark_red">玻璃棕</string>
+    <string name="gray">沟鼠灰</string>
+
+    <drawable name="info">#CCCCCC</drawable>
+
+</resources>

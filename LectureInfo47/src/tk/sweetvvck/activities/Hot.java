@@ -1,0 +1,403 @@
+package tk.sweetvvck.activities;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import com.gfan.sdk.statitistics.GFAgent;
+
+import tk.sweetvvck.R;
+import tk.sweetvvck.adapters.LectureAdapter;
+import tk.sweetvvck.application.ListenLecture;
+import tk.sweetvvck.customview.MyImageView;
+import tk.sweetvvck.customview.MyListView;
+import tk.sweetvvck.customview.MyListView.OnRefreshListener;
+import tk.sweetvvck.customview.MyProgressBar;
+import tk.sweetvvck.fromserver.GetLectureData;
+import tk.sweetvvck.lecture.Lecture;
+import tk.sweetvvck.utils.Constant;
+import tk.sweetvvck.utils.ExitApplication;
+import tk.sweetvvck.utils.HttpUtil;
+import tk.sweetvvck.utils.SystemUtil;
+import tk.sweetvvck.utils.ViewUtil;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+/**
+ * 用于显示一周讲座信息或者某个校园的讲座信息 按时间排序 若讲座时间与系统时间相同则显示红色【今天】
+ * 
+ * @author sweetvvck
+ */
+public class Hot extends Activity {
+
+	// 设置刷新布局，点击刷新按钮式显示
+	private RelativeLayout head = null;
+	private TextView lastUpdatedTextView;
+	private static int stateFlag = Constant.STATE_FLAG_DETAIL_INFO;
+
+	private Thread refreshThread = null;
+
+	private MyListView listView = null;
+
+	// 声明包含一周讲座信息的list
+	private List<Lecture> list = null;
+
+	private static final int MESSAGETYPE_01 = 0x0001;
+	// 声明进度条对话框
+	private AlertDialog progressDialog = null;
+
+	private String host;
+
+	// 声明自定义刷新图标和刷新进度条，用于接收从主View传来的它们
+	private MyImageView refresh = null;
+	private MyProgressBar refreshBar = null;
+	private String searchContent;
+	private FrameLayout loadErrorLayout = null;
+	private TextView noLecture = null;
+	private Button addLecture = null;
+	private ListenLecture listenLecture = null;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		ExitApplication.getInstance().addActivity(this);
+		super.onCreate(savedInstanceState);
+		listenLecture = (ListenLecture) getApplicationContext();
+		Intent intent = getIntent();
+		initView(intent);
+		if (host == null)
+			setContentView(R.layout.hot);
+		else {
+			setContentView(R.layout.host_detail);
+			noLecture = (TextView) findViewById(R.id.no_lecture);
+			addLecture = (Button) findViewById(R.id.add_lecture);
+			checkSkin();
+		}
+		// 得到自定义对话框
+		loadErrorLayout = (FrameLayout) findViewById(R.id.load_error);
+		MyListView myListView = (MyListView) findViewById(R.id.listview);
+		listView = myListView;
+		// 获得一周讲座信息，加载时弹出进度对话框
+		getInfoOnViewLoad();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		GFAgent.onResume(this);
+		if (host != null)
+			checkSkin();
+		Intent intent = getIntent();
+		refresh = (MyImageView) intent.getSerializableExtra("refresh");
+		refreshBar = (MyProgressBar) intent.getSerializableExtra("refreshBar");
+		refresh.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View v) {
+				if (host != null) {
+					noLecture.setVisibility(View.GONE);
+					addLecture.setVisibility(View.GONE);
+				}
+				// 点击刷新图标刷新讲座信息，显示旋转进度条和刷新提示
+				getInfoByRefreshImage();
+			}
+		});
+	}
+
+	private void initView(Intent intent) {
+		// 从主View获得host，如果为空则是从一周讲座进入，若果不为空，则是点击某个校园进入
+		host = intent.getStringExtra("hostTitle");
+		searchContent = intent.getStringExtra("searchContent");
+		refresh = (MyImageView) intent.getSerializableExtra("refresh");
+		refreshBar = (MyProgressBar) intent.getSerializableExtra("refreshBar");
+		refresh.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View v) {
+				if (host != null) {
+					noLecture.setVisibility(View.GONE);
+					addLecture.setVisibility(View.GONE);
+				}
+				// 点击刷新图标刷新讲座信息，显示旋转进度条和刷新提示
+				getInfoByRefreshImage();
+			}
+		});
+	}
+
+	// 用于处理各种getInfo传来的数据
+	private Handler handler = new Handler() {
+
+		@SuppressWarnings("unchecked")
+		public void handleMessage(Message message) {
+			switch (message.what) {
+			case MESSAGETYPE_01:
+				// 接收handler传来的list
+				list = (List<Lecture>) message.obj;
+				// 如果list为空，则提示未响应
+				if (list == null) {
+					loadErrorLayout.setVisibility(View.VISIBLE);
+					ImageView loadErrorView = (ImageView) loadErrorLayout
+							.findViewById(R.id.load_error_view);
+					loadErrorView.setOnClickListener(new OnClickListener() {
+
+						public void onClick(View v) {
+							getInfoByRefreshImage();
+							loadErrorLayout.setVisibility(View.GONE);
+						}
+					});
+				}
+				// 如果list包含的内容为空，则提示无讲座信息
+				else if (list.isEmpty()) {
+					if (host != null) {
+						noLecture.setText("暂无讲座信息~");
+						noLecture.setVisibility(View.VISIBLE);
+						addLecture.setVisibility(View.VISIBLE);
+						addLecture.setOnClickListener(new OnClickListener() {
+
+							public void onClick(View v) {
+								Intent intent = new Intent(Hot.this,
+										LectureInfo.class);
+								intent.putExtra("stateFlag",
+										Constant.STATE_FLAG_UPLOAD);
+								startActivity(intent);
+								Hot.this.finish();
+							}
+						});
+					}
+					list = null;
+				}
+				// 如果list中讲座信息的主键为空，则提示连接失败
+				else if (list.get(0).getSpeaker() == null) {
+					list = null;
+					loadErrorLayout.setVisibility(View.VISIBLE);
+					ImageView loadErrorView = (ImageView) loadErrorLayout
+							.findViewById(R.id.load_error_view);
+					loadErrorView.setOnClickListener(new OnClickListener() {
+
+						public void onClick(View v) {
+							getInfoByRefreshImage();
+							loadErrorLayout.setVisibility(View.GONE);
+						}
+					});
+				}
+				// 创建自定义adapter处理list中的信息
+				LectureAdapter lectureAdapter = new LectureAdapter(list,
+						Hot.this);
+
+				// 创立自定义ListView，实现下拉刷新功能
+				listView.setOnItemClickListener(new OnItemClickListener() {
+
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						System.out.println("点击的位置：" + position);
+						// 自定义的ListView，空间的位置是从0开始！！
+						Lecture lecture = list.get(position - 1);
+						// 跳转到主View中显示详细讲座信息
+						Intent intent = new Intent();
+						intent.setClass(Hot.this, LectureInfo.class);
+						intent.putExtra("lecture", lecture);
+						intent.putExtra("stateFlag", stateFlag);
+						intent.putExtra("host", host);
+						startActivity(intent);
+					}
+				});
+				listView.setonRefreshListener(new OnRefreshListener() {
+					public void onRefresh() {
+						getInfoByPullRefreshListView();
+					}
+				});
+				listView.setAdapter(lectureAdapter);
+				// 关闭进度对话框
+				if (progressDialog != null)
+					progressDialog.dismiss();
+				listView.onRefreshComplete();
+				if (head != null)
+					head.setVisibility(View.GONE);
+				if (refreshBar != null)
+					refreshBar.setVisibility(View.GONE);
+				if (refresh != null)
+					refresh.setVisibility(View.VISIBLE);
+				break;
+			}
+		}
+	};
+
+	private void getInfoOnViewLoad() {
+		progressDialog = ViewUtil.initProgressDialog(Hot.this, getApplicationContext().getString(R.string.loaddata));
+		progressDialog.setOnDismissListener(new OnDismissListener() {
+
+			public void onDismiss(DialogInterface dialog) {
+				System.out.println("dismessed !! Stop refreshThread");
+				refreshThread.interrupt();
+				refreshBar.setVisibility(View.GONE);
+				refresh.setVisibility(View.VISIBLE);
+			}
+		});
+		refresh();
+	}
+
+	private void getInfoByPullRefreshListView() {
+		refresh();
+	}
+
+	private void getInfoByRefreshImage() {
+		head = (RelativeLayout) findViewById(R.id.hot_contentLayout);
+		lastUpdatedTextView = (TextView) findViewById(R.id.hot_lastUpdatedTextView);
+		lastUpdatedTextView.setText("更新于:" + new Date().toLocaleString());
+		head.setVisibility(View.VISIBLE);
+		refresh();
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if (refreshBar != null)
+				refreshBar.setVisibility(View.GONE);
+			if (refresh != null)
+				refresh.setVisibility(View.VISIBLE);
+			if (head != null)
+				head.setVisibility(View.GONE);
+			if (listView != null)
+				listView.onRefreshComplete();
+			System.out.println("is refreshThread alive?:"
+					+ refreshThread.isAlive());
+			if (refreshThread.isAlive()) {
+				System.out.println("Stop refreshThread");
+				refreshThread.interrupt();
+				return false;
+			} else if (!refreshThread.isAlive() && host == null
+					&& searchContent == null) {
+				ViewUtil.onBackPressed_local(this);
+			}
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+
+	private void refresh() {
+		refresh.setVisibility(View.GONE);
+		refreshBar.setVisibility(View.VISIBLE);
+		refreshThread = new Thread() {
+			public void run() {
+				try {
+					long startTime = SystemClock.currentThreadTimeMillis();
+					List<Lecture> resultList = null;
+					while (!(refreshThread.isInterrupted() || Thread
+							.interrupted())) {
+						if (searchContent == null) {
+							NameValuePair date = new BasicNameValuePair("host",
+									host);
+							List<NameValuePair> dates = new ArrayList<NameValuePair>();
+							dates.add(date);
+							list = GetLectureData.getLectureData(
+									HttpUtil.HOST_URL, dates);
+						} else {
+							NameValuePair lecture = new BasicNameValuePair(
+									"lecture", searchContent);
+							List<NameValuePair> searchList = new ArrayList<NameValuePair>();
+							searchList.add(lecture);
+							list = GetLectureData.getLectureData(
+									HttpUtil.LECTURE_URL, searchList);
+						}
+						Log.e("vvck", list+"");
+						resultList = list;
+						String[] systemDate = SystemUtil.getSystemDate().split(
+								"-");
+						if (list != null) {
+							if (!list.isEmpty())
+								if (list.get(0) != null)
+									if (list.get(0).getDate() != null)
+										if (list.get(0).getDate().split(",")[0] != null) {
+											resultList = new ArrayList<Lecture>();
+											for (Lecture lecture : list) {
+												String[] lectureDate = lecture
+														.getDate().split(",")[0]
+														.split("-");
+												if (Integer
+														.parseInt(lectureDate[0]) > Integer
+														.parseInt(systemDate[0])) {
+													resultList.add(lecture);
+												} else if (Integer
+														.parseInt(lectureDate[0]) == Integer
+														.parseInt(systemDate[0])) {
+													if (Integer
+															.parseInt(lectureDate[1]) > Integer
+															.parseInt(systemDate[1])) {
+														resultList.add(lecture);
+													} else if (Integer
+															.parseInt(lectureDate[1]) == Integer
+															.parseInt(systemDate[1])) {
+														if (Integer
+																.parseInt(lectureDate[2]) >= Integer
+																.parseInt(systemDate[2])) {
+															resultList
+																	.add(lecture);
+														}
+													}
+												}
+											}
+										}
+						}
+						long endTime = SystemClock.currentThreadTimeMillis();
+						if (2000 - (endTime - startTime) > 0)
+							Thread.sleep(2000 - (endTime - startTime));
+						Message message = new Message();
+						message.what = MESSAGETYPE_01;
+						message.obj = resultList;
+						handler.sendMessage(message);
+						throw new InterruptedException();
+					}
+					throw new InterruptedException();
+				} catch (InterruptedException e) {
+					System.out.println("refresh is interruped!!");
+				}
+			}
+		};
+		refreshThread.start();
+	}
+
+	private void checkSkin() {
+		switch (listenLecture.getSkinFlag()) {
+		case Constant.BLUE:
+			addLecture.setBackgroundResource(R.drawable.btn_blue);
+			break;
+		case Constant.DARK_RED:
+			addLecture.setBackgroundResource(R.drawable.btn_dark_red);
+			break;
+		case Constant.RED:
+			addLecture.setBackgroundResource(R.drawable.btn_red);
+			break;
+		case Constant.GRAY:
+			addLecture.setBackgroundResource(R.drawable.btn_gray);
+			break;
+		case Constant.GREEN:
+			addLecture.setBackgroundResource(R.drawable.btn_green);
+			break;
+		default:
+			addLecture.setBackgroundResource(R.drawable.btn_blue);
+			break;
+		}
+	}
+	
+	protected void onPause() {
+		super.onPause();
+		GFAgent.onPause(this);
+	}
+}

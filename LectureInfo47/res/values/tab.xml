@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hot">热门</string>
+    <string name="style">分类</string>
+    <string name="favorate">收藏</string>
+    <string name="upload">发布</string>
+    <string name="set">设置</string>
+    <string name="host">校园</string>
+</resources>

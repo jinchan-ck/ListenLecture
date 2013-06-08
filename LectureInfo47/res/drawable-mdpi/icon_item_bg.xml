@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 主界面中头部分背景
+	selector-实现界面随着动作的不同也改变 -->
+<selector
+  xmlns:android="http://schemas.android.com/apk/res/android">
+  	<!-- android:state_selected-是否选择时 -->
+    <item android:state_selected="true" android:drawable="@drawable/icon_bg" />
+    
+    <!-- android:state_pressed-是否按下时 -->
+    <item android:state_pressed="true" android:drawable="@drawable/icon_bg_over" />
+    
+    <!-- android:state_focused-是否有焦点时 -->
+    <item android:state_focused="true" android:state_enabled="true" 
+    	android:drawable="@drawable/icon_bg_over" />
+</selector>

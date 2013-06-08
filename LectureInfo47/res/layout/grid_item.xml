@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="80dp"
+    android:layout_height="100dp"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingTop="5dp" >
+
+    <tk.sweetvvck.utils.ReflectImageView
+        android:id="@+id/itemimage"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="5dp"
+        android:maxHeight="80dp"
+        android:maxWidth="100dp"
+        android:src="@drawable/qinghuadaxue" />
+
+    <TextView
+        android:id="@+id/itemtext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/itemimage"
+        android:layout_alignRight="@+id/itemimage"
+        android:layout_below="@+id/itemimage"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="@string/qinghua" 
+        android:textColor="#336666"
+        />
+
+</RelativeLayout>

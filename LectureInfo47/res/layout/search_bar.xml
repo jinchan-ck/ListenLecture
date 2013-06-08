@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="40dip"
+    android:layout_marginLeft="10dip"
+    android:layout_marginRight="10dip" >
+
+    <Button
+        android:id="@+id/searchBtnSpeech"
+        android:layout_width="35dip"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/searchButton"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center_vertical|left"
+        android:focusableInTouchMode="true" />
+
+    <Button
+        android:id="@+id/searchButton"
+        android:layout_width="40dip"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="-1dip"
+        android:layout_marginTop="0dip"
+        android:gravity="center"
+        android:textColor="#ffffffff"
+        android:textSize="18sp" >
+    </Button>
+
+    <EditText
+        android:id="@+id/searchEdit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_margin="0dip"
+        android:layout_toLeftOf="@id/searchButton"
+        android:layout_toRightOf="@id/searchBtnSpeech"
+        android:drawablePadding="5dip"
+        android:hint="@string/searchHint"
+        android:singleLine="true"
+        android:textSize="16sp" >
+    </EditText>
+
+    <Button
+        android:id="@+id/btnClearEdit"
+        android:layout_width="25dip"
+        android:layout_height="25dp"
+        android:layout_alignRight="@+id/searchEdit"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:visibility="gone" />
+
+</RelativeLayout>

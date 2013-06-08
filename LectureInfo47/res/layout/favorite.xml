@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <!-- 内容 -->
+
+    <RelativeLayout
+        android:id="@+id/favorite_contentLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_background"
+        android:paddingLeft="30dp"
+        android:visibility="gone" >
+
+        <!-- 箭头图像、进度条 -->
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true" >
+
+            <!-- 进度条 -->
+
+            <ProgressBar
+                android:id="@+id/favorite_head_progressBar"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </FrameLayout>
+
+        <!-- 提示、最近更新 -->
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:textColor="@android:color/darker_gray" >
+
+            <!-- 提示 -->
+
+            <TextView
+                android:id="@+id/favorite_tipsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/refreshing"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="20sp" />
+
+            <!-- 最近更新 -->
+
+            <TextView
+                android:id="@+id/favorite_lastUpdatedTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/refresh_at"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="10sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <tk.sweetvvck.customview.MyListView
+        android:id="@+id/favorite_listview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="45dp"
+        android:layout_marginTop="-5dp"
+        android:background="@drawable/bg4"
+        android:divider="@drawable/line02"
+        android:dividerHeight="2dp"
+        android:drawSelectorOnTop="false" />
+
+    <FrameLayout
+        android:id="@+id/load_error_favorite"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone" >
+
+        <include
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            layout="@layout/empty_view" />
+    </FrameLayout>
+
+</LinearLayout>

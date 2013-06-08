@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="qinghua">清华大学</string>
+    <string name="beida">北京大学</string>
+    <string name="renda">中国人民大学</string>
+    <string name="lianda">北京联合大学</string>
+    <string name="beiyou">北京邮电大学</string>
+    <string name="duiwaijingmao">对外经贸大学</string>
+    <string name="beijiao">北京交通大学</string>
+    <string name="beiwai">北京外国语大学</string>
+    <string name="beihang">北京航空航天大学</string>
+    <string name="zhongshiyoudaxue">中国石油大学</string>
+    <string name="beiyu">北京语言大学</string>
+    <string name="beigongshang">北京工商大学</string>
+    <string name="zhongkeyuan">中科院</string>
+    <string name="minda">中央民族大学</string>
+    <string name="city">北京城市学院</string>
+    <string name="zhongguokuangyedaxue">中国矿业大学</string>
+    <string name="zhongyangcaida">中央财经大学</string>
+    <string name="beijingshifandaxue">北京师范大学</string>
+    <string name="zhongguonongyedaxue">中国农业大学</string>
+    <string name="zhongguodizhidaxue">中国地质大学</string>
+    <string name="zhongguozhengfadaxue">中国政法大学</string>
+    <string name="zhongyangyinyuexueyuan">中央音乐学院</string>
+    <string name="beijinghuagongdaxue">北京化工大学</string>
+    <string name="beijinglinyedaxue">北京林业大学</string>
+    <string name="huabeidianlidaxue">华北电力大学</string>
+    <string name="shoudushifandaxue">首都师范大学</string>
+    <string name="beijingkejidaxue">北京科技大学</string>
+</resources>

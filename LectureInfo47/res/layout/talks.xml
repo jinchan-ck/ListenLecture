@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lectureInfo_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:baselineAligned="false"
+    android:orientation="vertical" 
+    >
+    <TextView
+        android:id="@+id/talks_username"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="aaaaaaaaaaaaaaaaaaaaaaaaa"
+        android:textColor="@color/black"
+        android:textSize="15dp" />
+        
+    <TextView 
+        android:layout_marginLeft="10dp"
+        android:id="@+id/talks_notes"
+        android:text="aaaa"
+	    android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        />   
+
+</LinearLayout>

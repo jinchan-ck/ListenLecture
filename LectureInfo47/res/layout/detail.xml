@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bottom_animation_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <ScrollView
+        android:id="@+id/detail_body"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="vertical" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:scrollbarAlwaysDrawVerticalTrack="true" >
+
+            <TextView
+                android:id="@+id/lecturecontent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="12dp"
+                android:gravity="center_horizontal"
+                android:text="中法关系再展宏图，共迎挑战"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/host"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lecturecontent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="30dp"
+                android:singleLine="true"
+                android:text="清华大学aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                android:textColor="@color/black"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/shoucang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/host"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:text="已有0人收藏"
+                android:textColor="@color/black"
+                android:textSize="15dp" />
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/host"
+                android:layout_marginTop="12dp"
+                android:src="@drawable/line02" />
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/host"
+                android:layout_below="@+id/imageView1"
+                android:layout_marginTop="12dp"
+                android:text="@string/date"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/detail_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/time"
+                android:layout_below="@+id/datecontent"
+                android:layout_marginTop="12dp"
+                android:text="@string/address"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/detail_speaker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/detail_address"
+                android:layout_below="@+id/detail_address"
+                android:layout_marginTop="12dp"
+                android:text="@string/speaker"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="15dp" />
+
+            <ImageView
+                android:id="@+id/ImageView01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/detail_speaker"
+                android:layout_marginTop="12dp"
+                android:src="@drawable/line02" />
+
+            <TextView
+                android:id="@+id/detail_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/detail_speaker"
+                android:layout_below="@+id/ImageView01"
+                android:layout_marginTop="12dp"
+                android:text="主要内容："
+                android:textColor="@android:color/darker_gray"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/datecontent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/shoucang"
+                android:layout_alignTop="@+id/time"
+                android:layout_toRightOf="@+id/detail_speaker"
+                android:maxLines="2"
+                android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                android:textColor="@color/black"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/speakercontent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/ImageView01"
+                android:layout_alignBaseline="@+id/detail_speaker"
+                android:layout_toRightOf="@+id/detail_speaker"
+                android:text="aaaaa"
+                android:textColor="@color/black"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/contentscontent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/detail_content"
+                android:layout_below="@+id/detail_content"
+                android:layout_marginRight="15dp"
+                android:gravity="center_vertical"
+                android:scrollbarAlwaysDrawVerticalTrack="true"
+                android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/addresscontent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/detail_speaker"
+                android:layout_alignLeft="@+id/datecontent"
+                android:layout_marginTop="12dp"
+                android:text="aaaaa"
+                android:textColor="@color/black"
+                android:textSize="15dp" />
+
+            <ImageView
+                android:id="@+id/ImageViewBeforeLiuyan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/contentscontent"
+                android:layout_marginTop="12dp"
+                android:src="@drawable/line02" />
+
+            <TextView
+                android:id="@+id/liuyan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/detail_content"
+                android:layout_below="@+id/ImageViewBeforeLiuyan"
+                android:layout_marginRight="15dp"
+                android:text="留言："
+                android:textColor="@android:color/darker_gray"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/liuyan" 
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:gravity="center_vertical|center_horizontal"
+                >
+            <ProgressBar
+                android:id="@+id/talks_progressBar"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                
+                 />
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="留言加载中"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/no_talks"
+                android:layout_width="fill_parent"
+                android:layout_height="100dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/liuyan"
+                android:background="@drawable/no_talks"
+                android:visibility="gone" />
+
+            <FrameLayout
+                android:id="@+id/load_error"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/liuyan"
+                android:visibility="gone" >
+
+                <include layout="@layout/empty_view" />
+            </FrameLayout>
+
+            <tk.sweetvvck.customview.MyListView
+                android:id="@+id/talks"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/liuyan"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/chat_box"
+                android:divider="@drawable/line02"
+                android:dividerHeight="2dp"
+                android:drawSelectorOnTop="false"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <tk.sweetvvck.customview.ComposerLayout
+            android:id="@id/composer"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:clipChildren="false"
+            android:clipToPadding="false" >
+
+            <tk.sweetvvck.customview.InOutRelativeLayout
+                android:id="@id/composer_buttons_wrapper"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:clipChildren="false"
+                android:clipToPadding="false" >
+
+                <tk.sweetvvck.customview.InOutImageButton
+                    android:id="@id/composer_button_share"
+                    android:layout_width="42.0dip"
+                    android:layout_height="42.0dip"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginBottom="140.0dip"
+                    android:layout_marginLeft="8.666992dip"
+                    android:background="@drawable/composer_share"
+                    android:visibility="gone" />
+
+                <tk.sweetvvck.customview.InOutImageButton
+                    android:id="@id/composer_button_chat"
+                    android:layout_width="42.0dip"
+                    android:layout_height="42.0dip"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginBottom="122.44733dip"
+                    android:layout_marginLeft="74.166992dip"
+                    android:background="@drawable/composer_chat"
+                    android:visibility="gone" />
+
+                <tk.sweetvvck.customview.InOutImageButton
+                    android:id="@id/composer_button_place"
+                    android:layout_width="42.0dip"
+                    android:layout_height="42.0dip"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginBottom="6.666992dip"
+                    android:layout_marginLeft="142.0dip"
+                    android:background="@drawable/composer_place"
+                    android:visibility="gone" />
+
+                <tk.sweetvvck.customview.InOutImageButton
+                    android:id="@id/composer_button_favorate"
+                    android:layout_width="42.0dip"
+                    android:layout_height="42.0dip"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginBottom="74.5dip"
+                    android:layout_marginLeft="122.4493278dip"
+                    android:background="@drawable/composer_favorate"
+                    android:visibility="gone" />
+            </tk.sweetvvck.customview.InOutRelativeLayout>
+
+            <tk.sweetvvck.customview.InOutRelativeLayout
+                android:id="@id/composer_buttons_show_hide_button"
+                android:layout_width="60.0dip"
+                android:layout_height="60.0dip"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true" >
+
+                <ImageView
+                    android:id="@+id/composer_button"
+                    android:layout_width="50.0dip"
+                    android:layout_height="50.0dip"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5.0dip"
+                    android:src="@drawable/composer_button_blue" />
+
+                <ImageView
+                    android:id="@id/composer_buttons_show_hide_button_icon"
+                    android:layout_width="18.0dip"
+                    android:layout_height="18.0dip"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="21.0dip"
+                    android:src="@drawable/icon_plus" />
+            </tk.sweetvvck.customview.InOutRelativeLayout>
+        </tk.sweetvvck.customview.ComposerLayout>
+    </RelativeLayout>
+
+</FrameLayout>

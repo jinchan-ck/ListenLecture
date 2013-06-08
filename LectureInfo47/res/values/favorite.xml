@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="logining">正在登陆</string>
+    <string name="wait">请稍后...</string>
+    <string name="registering">注册中</string>
+    <string name="set_favorite">收藏中</string>
+    <string name="add_talk">发布中</string>
+    
+</resources>
