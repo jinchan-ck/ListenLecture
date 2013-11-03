@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tk.sweetvvck.R;
-import tk.sweetvvck.model.HostItem;
 import tk.sweetvvck.model.HostItemId;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -67,5 +66,23 @@ public class HostInfoAdapter extends BaseAdapter {
 		hostItem.hostName.setText(hostItemId.gethostNameId());
 
 		return convertView;
+	}
+	
+	static class HostItem {
+		
+		public ImageView hostImage = null;
+		public TextView hostName = null;
+		public ImageView getHostImage() {
+			return hostImage;
+		}
+		public void setHostImage(ImageView hostImage) {
+			this.hostImage = hostImage;
+		}
+		public TextView getHostName() {
+			return hostName;
+		}
+		public void setHostName(TextView hostName) {
+			this.hostName = hostName;
+		}
 	}
 }

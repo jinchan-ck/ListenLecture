@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+@SuppressWarnings("deprecation")
 public class LectureInfo extends ActivityGroup {
 
 	private ListenLecture listenLecture = null;
@@ -179,9 +180,9 @@ public class LectureInfo extends ActivityGroup {
 			refresh.setVisibility(View.GONE);
 			title.setText("校园");
 			bodyLayout.removeAllViews();
+			ViewUtil.setPressBackGround(host, favorites, hot, upload, set);
 			bodyLayout.addView(getLocalActivityManager().startActivity("three",
 					new Intent(LectureInfo.this, Host.class)).getDecorView());
-			ViewUtil.setPressBackGround(host, favorites, hot, upload, set);
 			break;
 		case Constant.STATE_FLAG_UPLOAD:
 			refresh.setVisibility(View.GONE);

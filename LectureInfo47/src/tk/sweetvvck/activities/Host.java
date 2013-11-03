@@ -108,7 +108,7 @@ public class Host extends Activity implements OnClickListener,
 
 	private static final int MESSAGETYPE_01 = 0x0001;
 
-	private List<HostItemId> list = new ArrayList<HostItemId>();
+	private static List<HostItemId> list = new ArrayList<HostItemId>();
 
 	private int pageCount = 2;
 
@@ -119,6 +119,7 @@ public class Host extends Activity implements OnClickListener,
 		setContentView(R.layout.host);
 		LoginDialog.LoadUserDate(Host.this);
 		listenLecture = (ListenLecture) getApplicationContext();
+		progressBar = (ProgressBar) findViewById(R.id.host_progressBar);
 		mContext = this;
 		// 初始化搜索框
 		initSearchBar();
@@ -172,11 +173,40 @@ public class Host extends Activity implements OnClickListener,
 	}
 
 	private Handler handler = new Handler() {
-		@SuppressWarnings("unchecked")
 		public void handleMessage(Message message) {
 			switch (message.what) {
 			case MESSAGETYPE_01:
-				list = (ArrayList<HostItemId>) message.obj;
+				if (progressBar != null)
+					progressBar.setVisibility(View.GONE);
+				mScrollLayout.setVisibility(View.VISIBLE);
+			}
+		}
+	};
+
+	public void getHost() {
+		progressBar.setVisibility(View.VISIBLE);
+		new Thread(new Runnable() {
+			public void run() {
+				long startTime = System.currentTimeMillis();
+				for (int i = 0; i < imageResId.length; i++) {
+					HostItemId hostItemId = new HostItemId();
+					hostItemId.sethostImageID(imageResId[i]);
+					hostItemId.sethostNameId(stringId[i]);
+
+					list.add(hostItemId);
+				}
+				bitmap = BitmapFactory.decodeResource(getResources(),
+						R.drawable.share_img);
+				try {
+					if (listenLecture.isFirstUse())
+						saveFile(bitmap, "share_img.jpg");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				long endTime = System.currentTimeMillis();
+				Message message = new Message();
+				message.what = MESSAGETYPE_01;
+				message.obj = list;
 				pageCount = (int) Math.ceil(list.size() / APP_PAGE_SIZE);
 				System.out.println(">>>>>>>>>>>>>>>>" + pageCount);
 				for (int i = 0; i < pageCount; i++) {
@@ -212,36 +242,6 @@ public class Host extends Activity implements OnClickListener,
 					// 将GridView 加入到水平滑动的布局中去
 					mScrollLayout.addView(hostPage);
 				}
-				if (progressBar != null)
-					progressBar.setVisibility(View.GONE);
-			}
-		}
-	};
-
-	public void getHost() {
-		progressBar = (ProgressBar) findViewById(R.id.host_progressBar);
-		progressBar.setVisibility(View.VISIBLE);
-		new Thread(new Runnable() {
-			public void run() {
-				long startTime = System.currentTimeMillis();
-				for (int i = 0; i < imageResId.length; i++) {
-					HostItemId hostItemId = new HostItemId();
-					hostItemId.sethostImageID(imageResId[i]);
-					hostItemId.sethostNameId(stringId[i]);
-
-					list.add(hostItemId);
-				}
-				bitmap = BitmapFactory.decodeResource(getResources(),
-						R.drawable.share_img);
-				try {
-					saveFile(bitmap, "share_img.jpg");
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-				long endTime = System.currentTimeMillis();
-				Message message = new Message();
-				message.what = MESSAGETYPE_01;
-				message.obj = list;
 				try {
 					if (2000 > (endTime - startTime))
 						Thread.sleep(2000 - (endTime - startTime));
@@ -255,47 +255,21 @@ public class Host extends Activity implements OnClickListener,
 	}
 
 	private void hostBackGroundChanged() {
-		progressBar = (ProgressBar) findViewById(R.id.host_progressBar);
 		progressBar.setVisibility(View.VISIBLE);
-		new Thread(new Runnable() {
-			public void run() {
-				long startTime = System.currentTimeMillis();
-				list = null;
-				list = new ArrayList<HostItemId>();
-				for (int i = 0; i < imageResId.length; i++) {
-					HostItemId hostItemId = new HostItemId();
-					hostItemId.sethostImageID(imageResId[i]);
-					hostItemId.sethostNameId(stringId[i]);
-
-					list.add(hostItemId);
-				}
-				long endTime = System.currentTimeMillis();
-				Message message = new Message();
-				message.what = MESSAGETYPE_01;
-				message.obj = list;
-				try {
-					if (2000 > (endTime - startTime))
-						Thread.sleep(2000 - (endTime - startTime));
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				handler.sendMessage(message);
-			}
-
-		}).start();
+		handler.sendEmptyMessage(MESSAGETYPE_01);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		GFAgent.onResume(this);
-		LoginDialog.LoadUserDate(Host.this);
-		if(isFirst != listenLecture.getSkinFlag()){
-			mScrollLayout.removeAllViews();
-			mScrollLayout = (ScrollLayout) findViewById(R.id.ScrollLayoutTest);
-			hostBackGroundChanged();
-			isFirst = listenLecture.getSkinFlag();
-		}
+//		LoginDialog.LoadUserDate(Host.this);
+//		if (isFirst != listenLecture.getSkinFlag()) {
+//			mScrollLayout.removeAllViews();
+//			mScrollLayout = (ScrollLayout) findViewById(R.id.ScrollLayoutTest);
+//			hostBackGroundChanged();
+//			isFirst = listenLecture.getSkinFlag();
+//		}
 	}
 
 	@Override
@@ -457,9 +431,9 @@ public class Host extends Activity implements OnClickListener,
 			break;
 		}
 	}
-	
-    protected void onPause() {
-    	super.onPause();
-    	GFAgent.onPause(this);
-    }
+
+	protected void onPause() {
+		super.onPause();
+		GFAgent.onPause(this);
+	}
 }
