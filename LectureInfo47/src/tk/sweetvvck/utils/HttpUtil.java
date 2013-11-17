@@ -17,20 +17,21 @@ import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 
-public class HttpUtil {//10.11.75.238:8080  http://www.listenlecture.tk/   http://10.11.75.238:8080/LectureInfo03
-	public final static String BASE_URL = "http://listenlecture.duapp.com/lecture/JsonAction.action";
-	public final static String HOST_URL = "http://listenlecture.duapp.com/lecture/JsonAction!getLectureByHost.action";
-	public final static String LECTURE_URL = "http://listenlecture.duapp.com/lecture/JsonAction!getLectureByLecture.action";
-	public final static String ADD_LECTURE_URL = "http://listenlecture.duapp.com/lecture/JsonAction!addLectureInfo.action";
-	public final static String LOGIN_URL = "http://listenlecture.duapp.com/lecture/JsonAction!login.action";
-	public final static String GET_FAVORITE_URL = "http://listenlecture.duapp.com/lecture/JsonAction!getFavoreateLecture.action";
-	public final static String FAVORITE_URL = "http://listenlecture.duapp.com/lecture/JsonAction!favoreate.action";
-	public final static String REGISTER_URL = "http://listenlecture.duapp.com/lecture/JsonAction!register.action";
-	public final static String GET_TALKS_URL = "http://listenlecture.duapp.com/lecture/JsonAction01.action";
-	public final static String ADD_TALKS_URL = "http://listenlecture.duapp.com/lecture/JsonAction!addTalks.action";
-	public final static String DELETE_ALL_FAVOTITE_LECTURE = "http://listenlecture.duapp.com/lecture/JsonAction!deleteAllFavorite.action";
-	public final static String DELETE_ONE_FAVOTITE_LECTURE = "http://listenlecture.duapp.com/lecture/JsonAction!deleteOneFavorite.action";
-	public final static String GET_FAVORITE_NUMBER = "http://listenlecture.duapp.com/lecture/JsonAction!getFavoriteNumber.action";
+public class HttpUtil {//10.11.75.238:8080  http://8.www.listenlecture.tk/   http://8.10.11.75.238:8080/LectureInfo03
+	public final static String BASE_URL = "http://8.listenlecture.duapp.com/lecture/JsonAction.action";
+	public final static String HOST_URL = "http://8.listenlecture.duapp.com/lecture/JsonAction!getLectureByHost.action";
+	public final static String LECTURE_URL = "http://8.listenlecture.duapp.com/lecture/JsonAction!getLectureByLecture.action";
+	public final static String ADD_LECTURE_URL = "http://8.listenlecture.duapp.com/lecture/JsonAction!addLectureInfo.action";
+	public final static String LOGIN_URL = "http://8.listenlecture.duapp.com/lecture/JsonAction!login.action";
+	public final static String GET_FAVORITE_URL = "http://8.listenlecture.duapp.com/lecture/JsonAction!getFavoreateLecture.action";
+	public final static String FAVORITE_URL = "http://8.listenlecture.duapp.com/lecture/JsonAction!favoreate.action";
+	public final static String REGISTER_URL = "http://8.listenlecture.duapp.com/lecture/JsonAction!register.action";
+	public final static String GET_TALKS_URL = "http://8.listenlecture.duapp.com/lecture/JsonAction01.action";
+	public final static String ADD_TALKS_URL = "http://8.listenlecture.duapp.com/lecture/JsonAction!addTalks.action";
+	public final static String DELETE_ALL_FAVOTITE_LECTURE = "http://8.listenlecture.duapp.com/lecture/JsonAction!deleteAllFavorite.action";
+	public final static String DELETE_ONE_FAVOTITE_LECTURE = "http://8.listenlecture.duapp.com/lecture/JsonAction!deleteOneFavorite.action";
+	public final static String GET_FAVORITE_NUMBER = "http://8.listenlecture.duapp.com/lecture/JsonAction!getFavoriteNumber.action";
+	public final static String LOAD_MORE = "http://8.listenlecture.duapp.com/lecture/JsonAction!loadMore.action";
 
 	public static String getData(String url, List<NameValuePair> nameValuePairs) {
 		if (nameValuePairs == null) {

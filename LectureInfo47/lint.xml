@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
     <issue id="ContentDescription">
-        <ignore path="res\layout\detail.xml" />
-        <ignore path="res\layout\grid_item.xml" />
-        <ignore path="res\layout\host.xml" />
-        <ignore path="res\layout\main.xml" />
-        <ignore path="res\layout\upload.xml" />
+        <ignore path="res/layout/detail.xml" />
+        <ignore path="res/layout/grid_item.xml" />
+        <ignore path="res/layout/host.xml" />
+        <ignore path="res/layout/main.xml" />
+        <ignore path="res/layout/upload.xml" />
+    </issue>
+    <issue id="HandlerLeak">
+        <ignore path="src/tk/sweetvvck/activities/Hot.java" />
     </issue>
     <issue id="NestedWeights">
-        <ignore path="res\layout\main.xml" />
+        <ignore path="res/layout/main.xml" />
     </issue>
     <issue id="TextFields">
-        <ignore path="res\layout\upload.xml" />
+        <ignore path="res/layout/upload.xml" />
     </issue>
     <issue id="UseCompoundDrawables">
-        <ignore path="res\layout\upload.xml" />
+        <ignore path="res/layout/upload.xml" />
     </issue>
     <issue id="UselessParent">
-        <ignore path="res\layout\host.xml" />
+        <ignore path="res/layout/host.xml" />
     </issue>
 </lint>

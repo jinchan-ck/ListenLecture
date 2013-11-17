@@ -228,6 +228,7 @@
             </FrameLayout>
 
             <tk.sweetvvck.customview.MyListView
+                android:background="#ffffff"
                 android:id="@+id/talks"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -235,12 +236,12 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/chat_box"
                 android:divider="@drawable/line02"
                 android:dividerHeight="2dp"
                 android:drawSelectorOnTop="false"
                 android:visibility="gone" />
         </RelativeLayout>
+<!--                 android:background="@drawable/chat_box" -->
     </ScrollView>
 
     <RelativeLayout

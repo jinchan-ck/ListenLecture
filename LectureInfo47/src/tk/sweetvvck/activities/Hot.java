@@ -7,8 +7,6 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.gfan.sdk.statitistics.GFAgent;
-
 import tk.sweetvvck.R;
 import tk.sweetvvck.adapters.LectureAdapter;
 import tk.sweetvvck.application.ListenLecture;
@@ -32,8 +30,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -41,8 +40,11 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.gfan.sdk.statitistics.GFAgent;
 
 /**
  * 用于显示一周讲座信息或者某个校园的讲座信息 按时间排序 若讲座时间与系统时间相同则显示红色【今天】
@@ -61,9 +63,10 @@ public class Hot extends Activity {
 	private MyListView listView = null;
 
 	// 声明包含一周讲座信息的list
-	private List<Lecture> list = null;
+	private List<Lecture> list = new ArrayList<Lecture>();
 
-	private static final int MESSAGETYPE_01 = 0x0001;
+	private static final int HANDLER_LOAD_MORE = 0x0001;
+	private static final int HANDLER_LOAD_COMPLETED = 0x0002;
 	// 声明进度条对话框
 	private AlertDialog progressDialog = null;
 
@@ -77,6 +80,12 @@ public class Hot extends Activity {
 	private TextView noLecture = null;
 	private Button addLecture = null;
 	private ListenLecture listenLecture = null;
+
+	// TODO Added 2013-11-17 用于分页加载功能
+	private int currentPage = 1;
+	private int pageSize = 10;
+	private TextView loadMoreView;
+	private LectureAdapter lectureAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +106,20 @@ public class Hot extends Activity {
 		loadErrorLayout = (FrameLayout) findViewById(R.id.load_error);
 		MyListView myListView = (MyListView) findViewById(R.id.listview);
 		listView = myListView;
+		listView.setMinimumHeight(SystemUtil.dip2px(this, 40));
+		LayoutInflater inflater = LayoutInflater.from(this);
+		LinearLayout loadMoreLayout = (LinearLayout) inflater.inflate(R.layout.load_more_layout, null);
+		loadMoreView = (TextView) loadMoreLayout.findViewById(R.id.load_more_text);
+		loadMoreView.setText("加载更多...");
+		listView.addFooterView(loadMoreLayout);
+		loadMoreView.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				loadMoreView.setText("正在加载，请稍后...");
+				refresh();
+				return;
+			}
+		});
 		// 获得一周讲座信息，加载时弹出进度对话框
 		getInfoOnViewLoad();
 	}
@@ -148,7 +171,7 @@ public class Hot extends Activity {
 		@SuppressWarnings("unchecked")
 		public void handleMessage(Message message) {
 			switch (message.what) {
-			case MESSAGETYPE_01:
+			case HANDLER_LOAD_MORE:
 				// 接收handler传来的list
 				list = (List<Lecture>) message.obj;
 				// 如果list为空，则提示未响应
@@ -197,51 +220,68 @@ public class Hot extends Activity {
 							loadErrorLayout.setVisibility(View.GONE);
 						}
 					});
+				} else {
+					// 创建自定义adapter处理list中的信息
+					
+					if(listView.getAdapter() != null){
+						lectureAdapter.notifyDataSetChanged();
+					}else{
+						lectureAdapter = new LectureAdapter(list, Hot.this);
+						listView.setAdapter(lectureAdapter);
+					}
+					currentPage ++;
+					loadMoreView.setText("加载更多...");
+					loadMoreView.setClickable(true);
+					// 创立自定义ListView，实现下拉刷新功能
+					listView.setOnItemClickListener(new OnItemClickListener() {
+
+						public void onItemClick(AdapterView<?> parent,
+								View view, int position, long id) {
+							if(position + 1 == listView.getCount()){
+								loadMoreView.setText("正在加载，请稍后...");
+								refresh();
+								return;
+							}
+							System.out.println("点击的位置：" + position);
+							// 自定义的ListView，空间的位置是从0开始！！
+							Lecture lecture = list.get(position - 1);
+							// 跳转到主View中显示详细讲座信息
+							Intent intent = new Intent();
+							intent.setClass(Hot.this, LectureInfo.class);
+							intent.putExtra("lecture", lecture);
+							intent.putExtra("stateFlag", stateFlag);
+							intent.putExtra("host", host);
+							startActivity(intent);
+						}
+					});
+					listView.setonRefreshListener(new OnRefreshListener() {
+						public void onRefresh() {
+							getInfoByPullRefreshListView();
+						}
+					});
 				}
-				// 创建自定义adapter处理list中的信息
-				LectureAdapter lectureAdapter = new LectureAdapter(list,
-						Hot.this);
-
-				// 创立自定义ListView，实现下拉刷新功能
-				listView.setOnItemClickListener(new OnItemClickListener() {
-
-					public void onItemClick(AdapterView<?> parent, View view,
-							int position, long id) {
-						System.out.println("点击的位置：" + position);
-						// 自定义的ListView，空间的位置是从0开始！！
-						Lecture lecture = list.get(position - 1);
-						// 跳转到主View中显示详细讲座信息
-						Intent intent = new Intent();
-						intent.setClass(Hot.this, LectureInfo.class);
-						intent.putExtra("lecture", lecture);
-						intent.putExtra("stateFlag", stateFlag);
-						intent.putExtra("host", host);
-						startActivity(intent);
-					}
-				});
-				listView.setonRefreshListener(new OnRefreshListener() {
-					public void onRefresh() {
-						getInfoByPullRefreshListView();
-					}
-				});
-				listView.setAdapter(lectureAdapter);
-				// 关闭进度对话框
-				if (progressDialog != null)
-					progressDialog.dismiss();
-				listView.onRefreshComplete();
-				if (head != null)
-					head.setVisibility(View.GONE);
-				if (refreshBar != null)
-					refreshBar.setVisibility(View.GONE);
-				if (refresh != null)
-					refresh.setVisibility(View.VISIBLE);
+				break;
+			case HANDLER_LOAD_COMPLETED:
+				loadMoreView.setText("数据加载全部");
+				loadMoreView.setClickable(false);
 				break;
 			}
+			// 关闭进度对话框
+			if (progressDialog != null)
+				progressDialog.dismiss();
+			listView.onRefreshComplete();
+			if (head != null)
+				head.setVisibility(View.GONE);
+			if (refreshBar != null)
+				refreshBar.setVisibility(View.GONE);
+			if (refresh != null)
+				refresh.setVisibility(View.VISIBLE);
 		}
 	};
 
 	private void getInfoOnViewLoad() {
-		progressDialog = ViewUtil.initProgressDialog(Hot.this, getApplicationContext().getString(R.string.loaddata));
+		progressDialog = ViewUtil.initProgressDialog(Hot.this,
+				getApplicationContext().getString(R.string.loaddata));
 		progressDialog.setOnDismissListener(new OnDismissListener() {
 
 			public void onDismiss(DialogInterface dialog) {
@@ -255,10 +295,12 @@ public class Hot extends Activity {
 	}
 
 	private void getInfoByPullRefreshListView() {
+		currentPage = 1;
 		refresh();
 	}
 
 	private void getInfoByRefreshImage() {
+		currentPage = 1;
 		head = (RelativeLayout) findViewById(R.id.hot_contentLayout);
 		lastUpdatedTextView = (TextView) findViewById(R.id.hot_lastUpdatedTextView);
 		lastUpdatedTextView.setText("更新于:" + new Date().toLocaleString());
@@ -302,65 +344,47 @@ public class Hot extends Activity {
 					while (!(refreshThread.isInterrupted() || Thread
 							.interrupted())) {
 						if (searchContent == null) {
-							NameValuePair date = new BasicNameValuePair("host",
-									host);
-							List<NameValuePair> dates = new ArrayList<NameValuePair>();
-							dates.add(date);
-							list = GetLectureData.getLectureData(
-									HttpUtil.HOST_URL, dates);
+							List<NameValuePair> datas = new ArrayList<NameValuePair>();
+							NameValuePair currentPageData = new BasicNameValuePair(
+									"currentPage", currentPage + "");
+							NameValuePair pageSizeData = new BasicNameValuePair(
+									"pageSize", pageSize + "");
+							datas.add(currentPageData);
+							datas.add(pageSizeData);
+							if(host != null && !host.isEmpty()){
+								NameValuePair hostData = new BasicNameValuePair(
+										"host", host);
+								datas.add(hostData);
+							}
+							resultList = GetLectureData.getLectureData(HttpUtil.LOAD_MORE, datas);
 						} else {
 							NameValuePair lecture = new BasicNameValuePair(
 									"lecture", searchContent);
 							List<NameValuePair> searchList = new ArrayList<NameValuePair>();
 							searchList.add(lecture);
-							list = GetLectureData.getLectureData(
+							resultList = GetLectureData.getLectureData(
 									HttpUtil.LECTURE_URL, searchList);
 						}
-						Log.e("vvck", list+"");
-						resultList = list;
-						String[] systemDate = SystemUtil.getSystemDate().split(
-								"-");
-						if (list != null) {
-							if (!list.isEmpty())
-								if (list.get(0) != null)
-									if (list.get(0).getDate() != null)
-										if (list.get(0).getDate().split(",")[0] != null) {
-											resultList = new ArrayList<Lecture>();
-											for (Lecture lecture : list) {
-												String[] lectureDate = lecture
-														.getDate().split(",")[0]
-														.split("-");
-												if (Integer
-														.parseInt(lectureDate[0]) > Integer
-														.parseInt(systemDate[0])) {
-													resultList.add(lecture);
-												} else if (Integer
-														.parseInt(lectureDate[0]) == Integer
-														.parseInt(systemDate[0])) {
-													if (Integer
-															.parseInt(lectureDate[1]) > Integer
-															.parseInt(systemDate[1])) {
-														resultList.add(lecture);
-													} else if (Integer
-															.parseInt(lectureDate[1]) == Integer
-															.parseInt(systemDate[1])) {
-														if (Integer
-																.parseInt(lectureDate[2]) >= Integer
-																.parseInt(systemDate[2])) {
-															resultList
-																	.add(lecture);
-														}
-													}
-												}
-											}
-										}
-						}
 						long endTime = SystemClock.currentThreadTimeMillis();
-						if (2000 - (endTime - startTime) > 0)
-							Thread.sleep(2000 - (endTime - startTime));
+						System.out.println("加载数据用时：" + (endTime - startTime));
 						Message message = new Message();
-						message.what = MESSAGETYPE_01;
-						message.obj = resultList;
+						if(list != null && !list.isEmpty() && (resultList == null || (resultList != null && resultList.isEmpty()))){
+							message.what = HANDLER_LOAD_COMPLETED;
+						}else{
+							if(resultList != null && !resultList.isEmpty()){
+								if(list == null){
+									list = new ArrayList<Lecture>();
+								}
+								if(currentPage == 1){
+									list.clear();
+								}
+								list.addAll(resultList);
+							}else if(resultList == null){
+								list = null;
+							}
+							message.what = HANDLER_LOAD_MORE;
+						}
+						message.obj = list;
 						handler.sendMessage(message);
 						throw new InterruptedException();
 					}
@@ -395,7 +419,7 @@ public class Hot extends Activity {
 			break;
 		}
 	}
-	
+
 	protected void onPause() {
 		super.onPause();
 		GFAgent.onPause(this);

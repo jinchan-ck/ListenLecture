@@ -104,7 +104,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:clickable="true"
-        android:src="@android:drawable/ic_popup_sync"
+        android:src="@drawable/actionbar_refresh"
         android:visibility="visible" />
 
     <tk.sweetvvck.customview.MyProgressBar
