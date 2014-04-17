@@ -73,10 +73,8 @@ public class HttpUtil {//10.11.75.238:8080  http://8.www.listenlecture.tk/   htt
 
 	private static HttpClient getHttpClient() {
 		HttpClient client = new DefaultHttpClient();
-		client.getParams().setIntParameter(HttpConnectionParams.SO_TIMEOUT,
-				20000); // 超时设置
-		client.getParams().setIntParameter(
-				HttpConnectionParams.CONNECTION_TIMEOUT, 20000);// 连接超时
+		client.getParams().setIntParameter(HttpConnectionParams.SO_TIMEOUT, 20000); // 超时设置
+		client.getParams().setIntParameter(HttpConnectionParams.CONNECTION_TIMEOUT, 20000);// 连接超时
 		return client;
 	}
 }

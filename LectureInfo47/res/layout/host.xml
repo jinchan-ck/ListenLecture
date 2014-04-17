@@ -7,35 +7,28 @@
     android:gravity="fill_vertical"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <include
+        android:padding="10dp"
+        android:id="@+id/title_bar"
+        layout="@layout/search_bar" />
+
+    <!-- 进度条 -->
+
+    <tk.sweetvvck.customview.ScrollLayout
+        android:layout_below="@id/title_bar"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:id="@+id/ScrollLayoutTest"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        
-        android:layout_marginTop="5dp"
-        android:orientation="vertical" >
+        android:layout_height="fill_parent" 
+        android:layout_marginBottom="45dp"
+        android:visibility="gone"/>
 
-        <include
-            layout="@layout/search_bar" />
-
-        <!-- 进度条 -->
-
-        <ProgressBar
-            android:id="@+id/host_progressBar"
-            style="?android:attr/progressBarStyle"
-            android:layout_marginTop="50dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center_horizontal"
-             />
-
-        <tk.sweetvvck.customview.ScrollLayout
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:id="@+id/ScrollLayoutTest"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" 
-            android:layout_marginBottom="45dp"
-            android:visibility="gone">
-        </tk.sweetvvck.customview.ScrollLayout>
-    </LinearLayout>
+    <ProgressBar
+        android:id="@+id/host_progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
 
 </RelativeLayout>

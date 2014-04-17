@@ -39,6 +39,7 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -216,7 +217,7 @@ public class Host extends Activity implements OnClickListener,
 					hostPage.setAdapter(new HostInfoAdapter(mContext, list, i));
 					// 子页面用GridView，每页三列
 					hostPage.setNumColumns(3);
-					hostPage.setVerticalSpacing(10);
+					hostPage.setVerticalSpacing(80);
 					hostPage.setOnItemClickListener(new OnItemClickListener() {
 
 						// 注意这个方法的各个参数的含义!!!!!!!!!!!
@@ -240,7 +241,12 @@ public class Host extends Activity implements OnClickListener,
 						}
 					});
 					// 将GridView 加入到水平滑动的布局中去
-					mScrollLayout.addView(hostPage);
+
+					ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
+							ViewGroup.LayoutParams.MATCH_PARENT,
+							ViewGroup.LayoutParams.MATCH_PARENT);
+
+					mScrollLayout.addView(hostPage, lp);
 				}
 				try {
 					if (2000 > (endTime - startTime))
@@ -263,13 +269,13 @@ public class Host extends Activity implements OnClickListener,
 	protected void onResume() {
 		super.onResume();
 		GFAgent.onResume(this);
-//		LoginDialog.LoadUserDate(Host.this);
-//		if (isFirst != listenLecture.getSkinFlag()) {
-//			mScrollLayout.removeAllViews();
-//			mScrollLayout = (ScrollLayout) findViewById(R.id.ScrollLayoutTest);
-//			hostBackGroundChanged();
-//			isFirst = listenLecture.getSkinFlag();
-//		}
+		// LoginDialog.LoadUserDate(Host.this);
+		// if (isFirst != listenLecture.getSkinFlag()) {
+		// mScrollLayout.removeAllViews();
+		// mScrollLayout = (ScrollLayout) findViewById(R.id.ScrollLayoutTest);
+		// hostBackGroundChanged();
+		// isFirst = listenLecture.getSkinFlag();
+		// }
 	}
 
 	@Override
